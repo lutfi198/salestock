@@ -1,0 +1,41 @@
+<div id="listviewContainer" class="oj-web-applayout-content">
+  
+  <div id="page1" class="drill-page">
+    <ul id="listview" aria-label="drill down list" 
+        data-bind="ojComponent: {component: 'ojListView', data: dataSource, item: {template: 'item_template'}, optionChange: gotoContent, selectionMode: 'single', scrollPolicy: 'loadMoreOnScroll'}">
+    </ul>
+    <button id= "loadMoreButton" data-bind="click: loadMore, ojComponent: {component: 'ojButton', label: 'Load More'}">
+    </button>
+  </div>
+
+  <div id="page2" class="drill-page drill-page2-hide">
+    <button id="backButton" data-bind="click: gotoList, ojComponent: {component:'ojButton', icons: {start:'oj-fwk-icon-caret-start oj-fwk-icon'}, label: 'Back'}">
+    </button>
+    <div class="oj-panel drill-panel">
+      <p>Name : <span data-bind="text: name" /></p>
+      <p>Rotation : <span data-bind="text: rotation_period" /></p>
+      <p>Orbital : <span data-bind="text: orbital_period" /></p>
+      <p>Diameter : <span data-bind="text: diameter" /></p>
+      <p>Climate : <span data-bind="text: climate" /></p>
+      <p>Gravity : <span data-bind="text: gravity" /></p>
+      <p>Terrain : <span data-bind="text: terrain" /></p>
+      <p>Surface Water : <span data-bind="text: surface_water" /></p>
+      <p>Population : <span data-bind="text: population" /></p>
+    </div>
+  </div>
+</div>
+
+<script type="text/html" id="item_template">
+  <li data-bind="attr: {id: $data['id']}">
+    <div class="oj-flex-bar">
+      <div class="oj-flex-bar-middle oj-flex-bar">
+        <div>
+          <span class="name" data-bind="text: name"></span>
+        </div>
+      </div>
+      <div class="oj-flex-bar-end">
+        <div role="presentation" class="oj-flex-item oj-fwk-icon oj-listview-drill-icon"></div>
+      </div>         
+    </div>
+  </li>
+</script>
