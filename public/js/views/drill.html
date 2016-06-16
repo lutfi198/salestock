@@ -2,16 +2,15 @@
   
   <div id="page1" class="drill-page">
     <ul id="listview" aria-label="drill down list" 
-        data-bind="ojComponent: {component: 'ojListView', data: dataSource, item: {template: 'item_template'}, optionChange: gotoContent, selectionMode: 'single', scrollPolicy: 'loadMoreOnScroll'}">
+        data-bind="ojComponent: {component: 'ojListView', data: dataSource, item: {template: 'item_template'}, optionChange: gotoContent, selectionMode: 'single'}">
     </ul>
-    <button id= "loadMoreButton" data-bind="click: loadMore, ojComponent: {component: 'ojButton', label: 'Load More'}">
-    </button>
+    <p data-bind="text: status"></p>
   </div>
 
   <div id="page2" class="drill-page drill-page2-hide">
     <button id="backButton" data-bind="click: gotoList, ojComponent: {component:'ojButton', icons: {start:'oj-fwk-icon-caret-start oj-fwk-icon'}, label: 'Back'}">
     </button>
-    <div class="oj-panel drill-panel">
+    <div class="oj-panel drill-page2 drill-panel">
       <p>Name : <span data-bind="text: name" /></p>
       <p>Rotation : <span data-bind="text: rotation_period" /></p>
       <p>Orbital : <span data-bind="text: orbital_period" /></p>
@@ -21,6 +20,7 @@
       <p>Terrain : <span data-bind="text: terrain" /></p>
       <p>Surface Water : <span data-bind="text: surface_water" /></p>
       <p>Population : <span data-bind="text: population" /></p>
+      <p><strong>Hit Count : </strong><strong data-bind="text: hit_count" /></p>
     </div>
   </div>
 </div>

@@ -1,8 +1,8 @@
 .drill-container
 {
   width: 100%;
-  height: 100%;
-  overflow: hidden;
+  height: 320px;
+  overflow: scroll;
 }
 
 .drill-panel
@@ -18,9 +18,12 @@
     left: 0;
     padding: 10px;
     box-sizing: border-box;
-    overflow: auto;
     -webkit-transition: transform 0.25s;
     transition: transform 0.25s;
+}
+
+.drill-page2 {
+    overflow: scroll;
 }
 
 .drill-page1-hide {
