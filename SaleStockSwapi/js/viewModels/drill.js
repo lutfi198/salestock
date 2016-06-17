@@ -29,18 +29,16 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'promise', 'ojs/oj
     self.gotoList = function (event, ui)
     {
       $("#listview").ojListView("option", "currentItem", null);
-      console.log("1 " + $(window).scrollTop());
       self.slide();
-      $("#page1").scrollTop(self.scrollPosition);
+      //TO DO somehow this scroll top does not work, something with overflow issue
+      $("#body").scrollTop(self.scrollPosition);
     };
 
     self.gotoContent = function (event, ui)
     {
-      console.log($('#page1').prop("overflow"));
-      console.log($('#page1').attr("overflow"));
       if (ui.option === "currentItem" && ui.value != null)
       {
-        self.scrollPosition = $('body').scrollTop();
+        self.scrollPosition = $("body").scrollTop();
         var row = self.dataSource.get(ui.value);
         row.then(function (v)
         {
@@ -63,6 +61,7 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'promise', 'ojs/oj
           firebase.database().ref("/planets/" + id).transaction(
             function (currentData)
             {
+              //check if is already created
               if (currentData === null)
               {
                 hit_count = 1;
