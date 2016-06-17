@@ -13,17 +13,9 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'promise', 'ojs/oj
     self.url += "?format=json";
     self.screenRange = oj.ResponsiveKnockoutUtils.createScreenRangeObservable();
     self.dataSource = new oj.ArrayTableDataSource(ko.observableArray(), {idAttribute: "id"});
-    self.name = ko.observable("");
-    self.rotation_period = ko.observable("");
-    self.orbital_period = ko.observable("");
-    self.diameter = ko.observable("");
-    self.climate = ko.observable("");
-    self.gravity = ko.observable("");
-    self.terrain = ko.observable("");
-    self.surface_water = ko.observable("");
-    self.population = ko.observable("");
     self.hit_count = ko.observable("");
     self.status = ko.observable("");
+    self.detail = ko.observable()
 
     //methods
     self.gotoList = function (event, ui)
@@ -42,15 +34,7 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'promise', 'ojs/oj
         var row = self.dataSource.get(ui.value);
         row.then(function (v)
         {
-          self.name(v.data.name);
-          self.rotation_period(v.data.rotation_period);
-          self.orbital_period(v.data.orbital_period);
-          self.diameter(v.data.diameter);
-          self.climate(v.data.climate);
-          self.gravity(v.data.gravity);
-          self.terrain(v.data.terrain);
-          self.surface_water(v.data.surface_water);
-          self.population(v.data.population);
+          self.detail(v.data);
 
           var id = v.data.url.substring(self.subCount, v.data.url.length - 1);
           self.hit_count("-");
@@ -68,6 +52,7 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'promise', 'ojs/oj
                 currentData =
                   {
                     name: v.data.name,
+                    url: v.data.url,
                     hit_count: hit_count
                   };
               }
@@ -86,7 +71,10 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'promise', 'ojs/oj
               }
               else if (committed)
               {
-                self.hit_count(snapshot.child("hit_count").val());
+                if (snapshot.child("url").val() === v.data.url)
+                {
+                  self.hit_count(snapshot.child("hit_count").val());
+                }
               }
             });
         });
@@ -126,15 +114,21 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'promise', 'ojs/oj
             d.id = i + j;
             self.dataSource.add(d, null);
           }
-          if ($("#listview").height() + 410 <= $(window).height())
-          {
-            self.loadData();
-          }
+          self.checkScreenAndLoadIfNeeded();
         })
         .fail(function (jqxhr, textStatus, error)
         {
           self.status("");
         });
+    };
+
+    //screen check and fill it with list
+    self.checkScreenAndLoadIfNeeded = function ()
+    {
+      if ($("#listview").height() + 410 <= $(window).height())
+      {
+        self.loadData();
+      }
     };
 
     //check for automatic load
@@ -144,6 +138,12 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'promise', 'ojs/oj
       {
         self.loadData();
       }
+    });
+
+    //sometimes user change the size, check if the we can fullfill the screen with list
+    $(window).resize(function ()
+    {
+      self.checkScreenAndLoadIfNeeded();
     });
 
     self.loadData();

@@ -1,5 +1,5 @@
 <div id="listviewContainer" class="drill-container">
-  
+
   <div id="page1" class="drill-page drill-page1">
     <ul id="listview" aria-label="drill down list" 
         data-bind="ojComponent: {component: 'ojListView', data: dataSource, item: {template: 'item_template'}, optionChange: gotoContent, selectionMode: 'none'}">
@@ -10,17 +10,21 @@
   <div id="page2" class="drill-page drill-page2 drill-page2-hide">
     <button id="backButton" class="oj-md-hide" data-bind="click: gotoList, ojComponent: {component:'ojButton', icons: {start:'oj-fwk-icon-caret-start oj-fwk-icon'}, label: 'Back'}">
     </button>
-    <div id="info-page" class="oj-panel">
-      <p>Name : <span data-bind="text: name" /></p>
-      <p>Rotation : <span data-bind="text: rotation_period" /></p>
-      <p>Orbital : <span data-bind="text: orbital_period" /></p>
-      <p>Diameter : <span data-bind="text: diameter" /></p>
-      <p>Climate : <span data-bind="text: climate" /></p>
-      <p>Gravity : <span data-bind="text: gravity" /></p>
-      <p>Terrain : <span data-bind="text: terrain" /></p>
-      <p>Surface Water : <span data-bind="text: surface_water" /></p>
-      <p>Population : <span data-bind="text: population" /></p>
-      <p><strong>Hit Count : </strong><strong data-bind="text: hit_count" /></p>
+    <div id="info-page" class="oj-panel" data-bind="visible: detail">
+      <div data-bind="with: detail">
+        <p>Name : <span data-bind="text: name" /></p>
+        <p>Rotation : <span data-bind="text: rotation_period" /></p>
+        <p>Orbital : <span data-bind="text: orbital_period" /></p>
+        <p>Diameter : <span data-bind="text: diameter" /></p>
+        <p>Climate : <span data-bind="text: climate" /></p>
+        <p>Gravity : <span data-bind="text: gravity" /></p>
+        <p>Terrain : <span data-bind="text: terrain" /></p>
+        <p>Surface Water : <span data-bind="text: surface_water" /></p>
+        <p>Population : <span data-bind="text: population" /></p>
+      </div>
+      <div>
+        <p><strong>Hit Count : </strong><strong data-bind="text: hit_count" /></p>
+      </div>
     </div>
   </div>
 </div>
