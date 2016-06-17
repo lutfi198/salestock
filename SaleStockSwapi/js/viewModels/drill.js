@@ -11,6 +11,7 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'promise', 'ojs/oj
     self.url = "http://swapi.co/api/planets/";
     self.subCount = self.url.length;
     self.url += "?format=json";
+    self.screenRange = oj.ResponsiveKnockoutUtils.createScreenRangeObservable();
     self.dataSource = new oj.ArrayTableDataSource(ko.observableArray(), {idAttribute: "id"});
     self.name = ko.observable("");
     self.rotation_period = ko.observable("");
@@ -28,13 +29,18 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'promise', 'ojs/oj
     self.gotoList = function (event, ui)
     {
       $("#listview").ojListView("option", "currentItem", null);
+      console.log("1 " + $(window).scrollTop());
       self.slide();
+      $("#page1").scrollTop(self.scrollPosition);
     };
 
     self.gotoContent = function (event, ui)
     {
+      console.log($('#page1').prop("overflow"));
+      console.log($('#page1').attr("overflow"));
       if (ui.option === "currentItem" && ui.value != null)
       {
+        self.scrollPosition = $('body').scrollTop();
         var row = self.dataSource.get(ui.value);
         row.then(function (v)
         {
@@ -47,10 +53,13 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'promise', 'ojs/oj
           self.terrain(v.data.terrain);
           self.surface_water(v.data.surface_water);
           self.population(v.data.population);
+
           var id = v.data.url.substring(self.subCount, v.data.url.length - 1);
           self.hit_count("-");
-          console.log($("#listview").offset());
+          $("#info-page").scrollTop(0);
           self.slide();
+
+          //update hit count in Firebase Realtime Database
           firebase.database().ref("/planets/" + id).transaction(
             function (currentData)
             {
@@ -85,17 +94,25 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'promise', 'ojs/oj
       }
     };
 
+    //slide for small screen only
     self.slide = function ()
     {
-      $("#page1").toggleClass("drill-page1-hide");
-      $("#page2").toggleClass("drill-page2-hide");
+      if (self.screenRange() == oj.ResponsiveUtils.SCREEN_RANGE.SM)
+      {
+        $("#page1").toggleClass("drill-page1-hide");
+        $("#page2").toggleClass("drill-page2-hide");
+      }
     };
 
     self.loadData = function ()
     {
       if (self.url == null)
         return;
-      self.url = self.url.replace("http://", "https://")
+
+      //Fix for Firebase Hosting, only https
+      self.url = self.url.replace("http://", "https://");
+
+      //Check if it is already load data
       if (self.status() === "Loading...")
         return;
       self.status("Loading...");
@@ -118,9 +135,10 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'promise', 'ojs/oj
         .fail(function (jqxhr, textStatus, error)
         {
           self.status("");
-        })
+        });
     };
 
+    //check for automatic load
     $(window).scroll(function ()
     {
       if ($(window).scrollTop() === $(document).height() - $(window).height())

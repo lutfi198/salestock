@@ -1,16 +1,16 @@
-<div id="listviewContainer" class="oj-web-applayout-content">
+<div id="listviewContainer" class="drill-container">
   
-  <div id="page1" class="drill-page">
+  <div id="page1" class="drill-page drill-page1">
     <ul id="listview" aria-label="drill down list" 
-        data-bind="ojComponent: {component: 'ojListView', data: dataSource, item: {template: 'item_template'}, optionChange: gotoContent, selectionMode: 'single'}">
+        data-bind="ojComponent: {component: 'ojListView', data: dataSource, item: {template: 'item_template'}, optionChange: gotoContent, selectionMode: 'none'}">
     </ul>
     <p data-bind="text: status"></p>
   </div>
 
-  <div id="page2" class="drill-page drill-page2-hide">
-    <button id="backButton" data-bind="click: gotoList, ojComponent: {component:'ojButton', icons: {start:'oj-fwk-icon-caret-start oj-fwk-icon'}, label: 'Back'}">
+  <div id="page2" class="drill-page drill-page2 drill-page2-hide">
+    <button id="backButton" class="oj-md-hide" data-bind="click: gotoList, ojComponent: {component:'ojButton', icons: {start:'oj-fwk-icon-caret-start oj-fwk-icon'}, label: 'Back'}">
     </button>
-    <div class="oj-panel drill-page2 drill-panel">
+    <div id="info-page" class="oj-panel">
       <p>Name : <span data-bind="text: name" /></p>
       <p>Rotation : <span data-bind="text: rotation_period" /></p>
       <p>Orbital : <span data-bind="text: orbital_period" /></p>
@@ -33,7 +33,7 @@
           <span class="name" data-bind="text: name"></span>
         </div>
       </div>
-      <div class="oj-flex-bar-end">
+      <div class="oj-flex-bar-end oj-md-hide">
         <div role="presentation" class="oj-flex-item oj-fwk-icon oj-listview-drill-icon"></div>
       </div>         
     </div>
